@@ -13,13 +13,20 @@ GMD = "https://prod-05.centralus.logic.azure.com/workflows/7ae5f4bb21a444049c96f
 let loggedIn = false;
 let loggedInUserID;
 let loggedInUsername;
+let selectedLanguage = $("#languageBox").val();
 
-//Handlers for button clicks
+// Handlers for button clicks
 $(document).ready(function() {
 
-  // translateText();
+  selectedLanguage = localStorage.getItem('selectedLanguage');
+
+  if(selectedLanguage) 
+  {
+    $('#languageBox').val(selectedLanguage);
+    loadLanguage();
+  }
+
   loadData();
-  console.log(loggedIn)
 
   if(loggedIn === "true")
   {
@@ -70,6 +77,14 @@ $(document).ready(function() {
     event.preventDefault();
     getMedia();
   });
+
+  $("#languageBox").change(function(){
+    selectedLanguage = $("#languageBox").val();
+    
+    setLanguage(selectedLanguage);
+
+    loadLanguage();
+  })
 
 });
 
@@ -293,7 +308,7 @@ function handleLoggedInUsers() {
       var items = [];
 
       items.push(`
-      <div class="row justify-content-center align-items-center" id="usernameDisplay">USER - ${loggedInUsername} </div>
+      <div class="row justify-content-center align-items-center" id="usernameDisplay"> ${loggedInUsername} </div>
       <div class="row align-items-start">
       <div class="col-2"  ></div>
       <div class="col-8" style="text-align: left;border-bottom:1px solid #dee2e6;">
@@ -301,12 +316,12 @@ function handleLoggedInUsers() {
 
       <form style="font-size: 10pt;" id="newAssetForm">
         <div class="mb-3">
-        <label for="FileName" class="form-label">Name media file</label>
+        <label for="FileName" id="nameMediaFile" class="form-label">Name media file</label>
         <input type="text" class="form-control" id="fileName" required>
         </div>
 
         <div class="mb-3">
-        <label for="FileType" class="form-label">Choose media type</label>
+        <label for="FileType" id="chooseMediaType" class="form-label">Choose media type</label>
         <select class="form-select" id="fileType">
           <option value="jpg">JPG</option>
           <option value="png">PNG</option>
@@ -316,7 +331,7 @@ function handleLoggedInUsers() {
         </div>
 
         <div class="mb-3">
-          <label for="UpFile" class="form-label">Upload media file</label>
+          <label for="UpFile" id="uploadMediaFile" class="form-label">Upload media file</label>
           <input type="file" class="form-control" id="upFile" required>
         </div>
       
@@ -347,7 +362,7 @@ function handleLoggedInUsers() {
         html: items.join("")
       }).appendTo("#indexContainer");
 
-      // End of your code
+      loadLanguage();
 
     }, 2000);
   }
@@ -549,29 +564,197 @@ function editMediaID(id) {
   });
 }
 
+function translateText(text, language, callback) 
+{
+  let languageCode = getLanguageCode(language);
 
-// const subscriptionKey = 'bea4b809855b40869b8d52164f3e70e1';
-// const region = 'centralus';
-// const translateEndpoint = `https://${region}.api.cognitive.microsofttranslator.com/translate?api-version=3.0`;
+  //const key = "bea4b809855b40869b8d52164f3e70e1"; 
+  //const location = "centralus"; 
+  const endpoint = "https://api.cognitive.microsofttranslator.com/"; 
+  
+  key = "4bbebd7c573c4d14aba959658da91c2c";
+  const location = "uksouth"; 
 
-// function translateText(text, targetLanguage) {
-//   return new Promise((resolve, reject) => {
-//     $.ajax({
-//       url: translateEndpoint,
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Ocp-Apim-Subscription-Key': subscriptionKey,
-//       },
-//       method: 'POST',
-//       data: JSON.stringify([{ 'Text': text }]),
-//       success: function (data) {
-//         const translatedText = data[0].translations[0].text;
-//         resolve(translatedText);
-//       },
-//       error: function (error) {
-//         console.error('Translation Error:', error);
-//         reject(error);
-//       },
-//     });
-//   });
-// }
+  const path = '/translate';
+  const constructedUrl = endpoint + path;
+
+  const params = 
+  {
+    'api-version': '3.0',
+    'to': `${languageCode}` 
+  };
+
+  const headers = 
+  {
+    'Ocp-Apim-Subscription-Key': key,
+    'Ocp-Apim-Subscription-Region': location,
+    'Content-type': 'application/json',
+    'X-ClientTraceId': uuidv4()
+  };
+
+  const body = [
+    {
+    'text': `${text}`,
+    'to': `${languageCode}` 
+    }
+  ];
+
+  // Make the API request
+  $.ajax({
+    url: constructedUrl + '?' + $.param(params),
+    type: 'POST',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+    headers: headers,
+    success: function(response) {
+      let translatedText = response[0].translations[0].text;
+      // sends translatedText data over to the other function to use
+      callback(translatedText); 
+    },
+    error: function(error) {
+      console.error('Error:', error);
+    }
+  });
+}
+
+function getLanguageCode(language) 
+{
+  switch (language.toLowerCase()) {
+    case 'english':
+      return 'en';
+    case 'spanish':
+      return 'es';
+    case 'french':
+      return 'fr';
+    case 'german':
+      return 'de';
+    case 'chinese':
+      return 'zh-Hans';
+    case 'japanese':
+      return 'ja';
+    default:
+      return 'en';
+  }
+}
+
+function upHeaderText() 
+{
+  const elementsToTranslate = [
+    { element: $("#pageTitle"), text: $("#pageTitle").text() },
+    { element: $("#homeIndex"), text: $("#homeIndex").text() },
+    { element: $("#logoutButton"), text: $("#logoutButton").text() },
+    { element: $("#usernameDisplay"), text: $("#usernameDisplay").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item) 
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function upContainerText()
+{
+  const elementsToTranslate = [
+    { element: $("#addMedia"), text: $("#addMedia").text() },
+    { element: $("#addMediaFile"), text: $("#addMediaFile").text() },
+    { element: $("#nameMediaFile"), text: $("#nameMediaFile").text() },
+    { element: $("#chooseMediaType"), text: $("#chooseMediaType").text() },
+    { element: $("#uploadMediaFile"), text: $("#uploadMediaFile").text() },
+    { element: $("#submitNewMedia"), text: $("#submitNewMedia").text() },
+    { element: $("#clearNewMediaForm"), text: $("#clearNewMediaForm").text() },
+    { element: $("#retMedia"), text: $("#retMedia").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item) 
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function upIndexText()
+{
+  const elementsToTranslate = [
+    { element: $("#optionTitle"), text: $("#optionTitle").text() },
+    { element: $("#loginTitle"), text: $("#loginTitle").text() },
+    { element: $("#registerTitle"), text: $("#registerTitle").text() },
+    { element: $("#guestTitle"), text: $("#guestTitle").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item) 
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function upRegisterText()
+{
+  const elementsToTranslate = [
+    { element: $("#registerHeader"), text: $("#registerHeader").text() },
+    { element: $("#rFirstName"), text: $("#rFirstName").text() },
+    { element: $("#rLastName"), text: $("#rLastName").text() },
+    { element: $("#rUserName"), text: $("#rUserName").text() },
+    { element: $("#rEmail"), text: $("#rEmail").text() },
+    { element: $("#rPassword"), text: $("#rPassword").text() },
+    { element: $("#rConfirmPassword"), text: $("#rConfirmPassword").text() },
+    { element: $("#submitRegister"), text: $("#submitRegister").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item) 
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function upLoginText()
+{
+  const elementsToTranslate = [
+    { element: $("#submitLogin"), text: $("#submitLogin").text() },
+    { element: $("#lEmail"), text: $("#lEmail").text() },
+    { element: $("#lPassword"), text: $("#lPassword").text() },
+    { element: $("#loginHeader"), text: $("#loginHeader").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item) 
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function setLanguage(selectedLanguage)
+{
+  localStorage.setItem('selectedLanguage', selectedLanguage);
+}
+
+function getLanguage()
+{
+  return localStorage.getItem('selectedLanguage');
+}
+
+function loadLanguage()
+{
+  upHeaderText();
+  upContainerText();
+  upIndexText();
+  upLoginText();
+  upRegisterText();
+}

@@ -10,7 +10,9 @@
       <script type="text/javascript" src="JS/bootstrap.js"></script>
       <script type="text/javascript" src="JS/bootstrap.bundle.min.js"></script>
       <script type="text/javascript" src="JS/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 
+      
       <script type="text/javascript" src="JS/app.js"></script>
 
   </head>
@@ -21,18 +23,30 @@
 
         <!-- Header -->
         <div class="row align-items-start">
-          <div class="col-2"></div>
-        
-          <div class="col-8 text-center">
-            <h1 class="display-6 font-weight-bold">Media Sharing</h1>
+          <div class="col-2 mt-2">
+            <div class="d-flex align-items-start"> 
+              
+              <div class="dropdown">
+                <div class="mb-3">
+                  <label for="FileType" class="form-label">Choose Language</label>
+                  <select class="form-select" id="languageBox">
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="japanese">Japanese</option>
+                  </select>
+                </div>
+              </div>
           </div>
-
-          <!-- Login status -->
-          <div id="loginStatus"></div>
-
-  
-          <div class="col-2"></div>
-
+        </div>
+        
+        <!-- Page Title -->
+        <div class="col-8 text-center">
+          <a href="index.html">
+            <h1 id="pageTitle">Media Sharing</h1>
+          </a>
         </div>
 
         <!-- Navigation -->
@@ -43,9 +57,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
 
               <ul class="navbar-nav" id="navBar">
-                <li class="nav-item">
-                  <a class="nav-link" id="homeIndex" href="index.html">Home</a>
-                </li>
+                
               </ul>
             </div>
           </div>
@@ -58,26 +70,26 @@
               <div class="col-md-6">
                   <div class="card text-center">
                       <div class="card-header">
-                          <h3 class="mb-0">Please Select An Option To Continue</h3>
+                          <h3 id="optionTitle" class="mb-0">Please Select An Option To Continue</h3>
                       </div>
 
                         <div class="row m-4">
 
                           <div class="m-1 btn bg-primary align-items-center" onclick="window.location.href='login.html';" style="cursor: pointer;">
                             <div class="text-white">
-                                <h5>Log-in</h5>
+                                <h5 id="loginTitle">Log-in</h5>
                             </div>
                           </div>
 
                           <div class="m-1 btn bg-success align-items-center" onclick="window.location.href='register.html';" style="cursor: pointer;">
                             <div class="text-white">
-                                <h5>Register</h5>
+                                <h5 id="registerTitle">Register</h5>
                             </div>
                           </div>
 
                           <div class="m-1 btn bg-info align-items-center" id="guestButton" onclick="window.location.href='index.html';" style="cursor: pointer;">
                             <div class="text-white">
-                                <h5>Guest</h5>
+                                <h5 id="guestTitle">Guest</h5>
                             </div>
                           </div>
 
