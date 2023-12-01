@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" ng-app="Dashboard">
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Media Sharing</title>
+
+      <link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="CSS/styles.css">
+      <script type="text/javascript" src="JS/bootstrap.js"></script>
+      <script type="text/javascript" src="JS/bootstrap.bundle.min.js"></script>
+      <script type="text/javascript" src="JS/jquery-3.6.0.min.js"></script>
+
+      <script type="text/javascript" src="JS/app.js"></script>
+
+  </head>
+  
+  <body>
+
+    <div  class="container">
+
+        <!-- Header -->
+        <div class="row align-items-start">
+          <div class="col-2"></div>
+        
+          <div class="col-8 text-center">
+            <h1 class="display-6 font-weight-bold">Media Sharing</h1>
+          </div>
+
+          <!-- Login status -->
+          <div id="loginStatus"></div>
+
+  
+          <div class="col-2"></div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div>
+        <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+          <div class="container">
+              
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+
+              <ul class="navbar-nav" id="navBar">
+                <li class="nav-item">
+                  <a class="nav-link" id="homeIndex" href="index.html">Home</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          </nav>
+        </div>
+
+        <!-- Content -->
+        <div class="container">
+          <div class="row justify-content-center align-items-center pt-3" id="indexContainer">
+              <div class="col-md-6">
+                  <div class="card text-center">
+                      <div class="card-header">
+                          <h3 class="mb-0">Please Select An Option To Continue</h3>
+                      </div>
+
+                        <div class="row m-4">
+
+                          <div class="m-1 btn bg-primary align-items-center" onclick="window.location.href='login.html';" style="cursor: pointer;">
+                            <div class="text-white">
+                                <h5>Log-in</h5>
+                            </div>
+                          </div>
+
+                          <div class="m-1 btn bg-success align-items-center" onclick="window.location.href='register.html';" style="cursor: pointer;">
+                            <div class="text-white">
+                                <h5>Register</h5>
+                            </div>
+                          </div>
+
+                          <div class="m-1 btn bg-info align-items-center" id="guestButton" onclick="window.location.href='index.html';" style="cursor: pointer;">
+                            <div class="text-white">
+                                <h5>Guest</h5>
+                            </div>
+                          </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+    </div>
+  </body>
+</html>

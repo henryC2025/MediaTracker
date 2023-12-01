@@ -1,0 +1,119 @@
+body
+{
+    background-color: #f0f0f0;
+    font-family: monospace;
+    color: rgba(0,0,0,.55);
+}
+
+h1 
+{
+    color: #3498db;
+    font-size: 2.5em; 
+    text-align: center;
+    margin-top: 20px; 
+    text-transform: uppercase; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+}
+.navbar-light {
+    background-color: transparent !important;
+    border-bottom: 1px solid #ddd; 
+    padding: 10px 0;
+}
+
+#addMedia
+{
+    font-weight: 1000;
+    font-size: xx-large;
+    text-transform: uppercase;
+}
+
+#homeIndex
+{
+    font-weight: 1000;
+    font-size: xx-large;
+    text-transform: uppercase;
+}
+
+#logoutButton
+{
+    font-weight: 1000;
+    font-size: xx-large;
+    text-transform: uppercase;  
+}
+
+#usernameDisplay
+{
+    font-weight: 1000;
+    font-size: x-large;
+    text-transform: uppercase;  
+}
+
+
+.btn 
+{
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.btn-primary 
+{
+    background-color: #3498db;
+    color: #fff;
+}
+  
+.btn-primary:hover 
+{
+    background-color: #545b62;
+}
+  
+.btn-secondary 
+{
+    background-color: #6c757d;
+    color: #fff;
+}
+  
+.btn-secondary:hover 
+{
+    background-color: #545b62;
+}
+  
+hr
+{
+    border: transparent 1px;
+}  
+
+@keyframes buttonScale 
+{
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+  
+.btn:hover 
+{
+    animation: buttonScale 1s infinite; 
+}
+  
+.btn 
+{
+    transition: transform 0.3s ease-in-out; 
+}
+
+ul
+{
+    font-weight: 1000;
+    font-size: large;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.55);
+}
