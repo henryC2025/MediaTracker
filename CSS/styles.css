@@ -8,12 +8,12 @@ body
 h1 
 {
     color: #3498db;
-    font-size: 2.5em; 
+    font-size: 50px; 
     text-align: center;
     margin-top: 20px; 
     text-transform: uppercase; 
     font-weight: bold; 
-    letter-spacing: 2px; 
+    letter-spacing: 5px; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
 }
 .navbar-light {
@@ -116,4 +116,25 @@ ul
     font-size: large;
     text-transform: uppercase;
     color: rgba(0,0,0,.55);
+}
+
+a 
+{
+    text-decoration: none;
+}
+
+h1 
+{
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out; 
+}
+
+h1:hover 
+{
+    transform: scale(1.1);
+}
+
+h5
+{
+    text-transform: capitalize;
 }

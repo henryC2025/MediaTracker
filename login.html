@@ -10,6 +10,7 @@
       <script type="text/javascript" src="JS/bootstrap.js"></script>
       <script type="text/javascript" src="JS/bootstrap.bundle.min.js"></script>
       <script type="text/javascript" src="JS/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 
       <script type="text/javascript" src="JS/app.js"></script>
 
@@ -19,18 +20,30 @@
 
       <!-- Header -->
       <div class="row align-items-start">
-        <div class="col-2"></div>
-      
-        <div class="col-8 text-center">
-          <h1 class="display-6 font-weight-bold">Media Sharing</h1>
+        <div class="col-2 mt-2">
+          <div class="d-flex align-items-start"> 
+            
+            <div class="dropdown">
+              <div class="mb-3">
+                <label for="FileType" class="form-label">Choose Language</label>
+                <select class="form-select" id="languageBox">
+                  <option value="english">English</option>
+                  <option value="spanish">Spanish</option>
+                  <option value="french">French</option>
+                  <option value="german">German</option>
+                  <option value="chinese">Chinese</option>
+                  <option value="japanese">Japanese</option>
+                </select>
+              </div>
+            </div>
         </div>
-
-        <div class="col-2"></div>
-
-        <div id="loginStatus"></div>
-          
-  
-        <div class="col-2"></div>
+      </div>
+      
+      <!-- Page Title -->
+      <div class="col-8 text-center">
+        <a href="index.html">
+          <h1 id="pageTitle">Media Sharing</h1>
+        </a>
       </div>
 
       <!-- Navigation -->
@@ -41,9 +54,7 @@
           <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
 
             <ul class="navbar-nav" id="navBar">
-              <li class="nav-item">
-                <a class="nav-link" id="homeIndex" href="index.html">Home</a>
-              </li>
+              
             </ul>
           </div>
         </div>
@@ -56,14 +67,14 @@
         <div class="col-md-6">
           <div class="card">
             <div class="card-body">
-              <h2 class="card-title text-center">Login</h2>
+              <h2 id="loginHeader" class="card-title text-center">Login</h2>
               <form id="loginForm">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+                  <label for="email" id="lEmail" class="form-label">Email</label>
                   <input type="text" class="form-control" id="loginEmail" required>
                 </div>
                 <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
+                  <label for="password" id="lPassword" class="form-label">Password</label>
                   <input type="password" class="form-control" id="loginPassword" required>
                 </div>
                 <button id="submitLogin" type="submit" class="btn btn-primary btn-block">Login</button>
