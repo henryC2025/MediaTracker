@@ -58,7 +58,7 @@
                 <a class="nav-link" id="qaLink" href="qa.html">Q&A</a>
               </li>
             </ul>
-
+            
           </div>
         </div>
         </nav>
@@ -66,24 +66,31 @@
 
     <!-- Content --> 
     <div class="container">
-      <div class="row justify-content-center align-items-center pt-5" id="loginFormDiv">
+      <div class="row justify-content-center align-items-center pt-2">
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h2 id="loginHeader" class="card-title text-center">Login</h2>
-              <form id="loginForm">
-                <div class="mb-3">
-                  <label for="email" id="lEmail" class="form-label">Email</label>
-                  <input type="text" class="form-control" id="loginEmail" required>
+
+            <div class="container row justify-content-center align-items-center pt-5">
+
+                <h3 id="questionTitle">Ask a Question</h3>
+                
+                <!-- Text area for entering a question -->
+                <div class="form-group">
+                    <textarea class="form-control" id="questionBox" rows="5"></textarea>
                 </div>
-                <div class="mb-3">
-                  <label for="password" id="lPassword" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="loginPassword" required>
+                
+                <!-- Button to submit the question -->
+                <div class="mb-3 d-flex justify-content-between">
+                    <button type="button" id="submitQuestion" class="btn btn-primary mt-2">Submit</button>
+                    <button type="button" id="clearQuestion" class="btn btn-primary mt-2">Clear</button>
                 </div>
-                <button id="submitLogin" type="submit" class="btn btn-primary btn-block">Login</button>
-              </form>
+                
+                <!-- Area for displaying responses -->
+                <div id="answerArea" class="row justify-content-center align-items-center p-1">
+                    
+                </div>
+
             </div>
-          </div>
+
         </div>
       </div>
     </div>

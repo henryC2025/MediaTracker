@@ -61,6 +61,29 @@ $(document).ready(function() {
       submitLogin();
   })
 
+  // Submit button on question form
+  $("#submitQuestion").click(function(event)
+  {
+    event.preventDefault();
+
+    let question = $("#questionBox").val();
+
+    if(question !== "")
+    {
+      questionAnswers(question);
+    }
+    else
+    {
+      window.alert("Please enter a question before submitting!")
+    }
+  })
+
+  $("#clearQuestion").click(function(event)
+  {
+    event.preventDefault();
+    clearQuestionForm();
+  })
+
   // New container
   $('#indexContainer').on('click', '#submitNewMedia', function(event){
     event.preventDefault();
@@ -90,11 +113,11 @@ $(document).ready(function() {
 
 function editMedia(data) {
 
-  var newFileName = window.prompt("Enter the new file name:", "");
+  let newFileName = window.prompt("Enter the new file name:", "");
 
   if(newFileName !== null)
   {
-    var dataToUpdate = 
+    let dataToUpdate = 
     {
       "id": data.id,
       "fileLocator" : data.fileLocator,
@@ -129,7 +152,7 @@ function editMedia(data) {
 function deleteMedia(mediaID) {
   // Log a message to the console
   console.log("Edit button clicked for mediaID: " + mediaID);
-  var confirmDelete = window.confirm("Are you sure you want to delete this media item?");
+  let confirmDelete = window.confirm("Are you sure you want to delete this media item?");
 
   if (confirmDelete) 
   {
@@ -176,10 +199,6 @@ function submitLogin()
       contentType: 'application/json',
       type: 'POST',
       success: function(data){
-
-        console.log(data);
-        console.log("userID" + data.Table1[0].UserID);
-        console.log("userName" + data.Table1[0].UserName);
         loggedIn = true; 
 
         if(!(Object.keys(data).length === 0))
@@ -236,14 +255,12 @@ function submitRegistration()
   // Handle registration
   if(validateRegistration(password) && passwordMatch())
   {
-    console.log("Reg is GOOD")
     $.ajax({
       url: CNU, 
       data: JSON.stringify(requestData),
       contentType: 'application/json',
       type: 'POST',
       success: function(data){
-        console.log("data uploaded")
         handleRegistration();  
       },
       error: function(error) {
@@ -278,7 +295,7 @@ function handleLoggedInUsers() {
     // Add a delay to animation
     setTimeout(function() {
       $('#registerFormDiv').html('<a href="index.html" class="btn btn-secondary">Go to Media Share</a>');
-    }, 1500); 
+    }, 1000); 
 
     // Show the spinning animation
     $('#loginFormDiv').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
@@ -286,9 +303,9 @@ function handleLoggedInUsers() {
     // Add a delay to animation
     setTimeout(function() {
       $('#loginFormDiv').html('<a href="index.html" class="btn btn-secondary">Go to Media Share</a>');
-    }, 1500); 
+    }, 1000); 
 
-    var loginStatusElement = document.getElementById('navBar');
+    let loginStatusElement = document.getElementById('navBar');
 
     loginStatusElement.innerHTML += 
     `<ul class="navbar-nav" id="navBar">
@@ -305,7 +322,7 @@ function handleLoggedInUsers() {
       // Your code to be executed after 5 seconds (or any other duration)
       // Replace the following lines with your actual code
 
-      var items = [];
+      let items = [];
 
       items.push(`
       <div class="row justify-content-center align-items-center" id="usernameDisplay"> ${loggedInUsername} </div>
@@ -364,7 +381,7 @@ function handleLoggedInUsers() {
 
       loadLanguage();
 
-    }, 2000);
+    }, 1000);
   }
 }
 
@@ -382,7 +399,7 @@ function handleRegistration()
   // Add a delay to animation
   setTimeout(function() {
     $('#registerFormDiv').html('<a href="login.html" class="btn btn-secondary">Go to Login Page</a>');
-  }, 1500); 
+  }, 1000); 
 }
 
 function loadData()
@@ -420,48 +437,40 @@ function submitNewMedia()
   let fileName = $('#fileName').val().trim();
   let fileType = $('#fileType').val();
   let uploadFile = $('#upFile')[0].files[0];
-
-  console.log(uploadFile)
   
   if(uploadFile)
   {
     let uploadFileName = uploadFile.name;
 
     // Extract file extension
-    var fileExtension = uploadFileName.split('.').pop().toLowerCase();
-    console.log("File extension: " + fileExtension)
-    console.log("Selected Media extension: " + fileType)
+    let fileExtension = uploadFileName.split('.').pop().toLowerCase();
     
     // Check if the file extension matches the selected media type
     if (fileExtension === fileType && fileName != "") 
     {
-      // LOGIC HERE ########################
-      console.log("match")
-      submitData = new FormData();
+      //Get form variables and append them to the form data object
+      submitData.append('fileName', fileName)
+      submitData.append('fileType', fileType)
+      submitData.append('userID', loggedInUserID)
+      submitData.append('userName', loggedInUsername)
+      submitData.append('uploadFile', uploadFile)  
 
-          //Get form variables and append them to the form data object
-          submitData.append('fileName', fileName)
-          submitData.append('fileType', fileType)
-          submitData.append('userID', loggedInUserID)
-          submitData.append('userName', loggedInUsername)
-          submitData.append('uploadFile', uploadFile)  
-
-          //Post the form data to the endpoint, note the need to set the content type header
-          $.ajax({
-            url: CNM, 
-            data: submitData,
-            cache: false,
-            enctype: 'multipart/form-data',
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(data){
-              window.alert("Media has been uploaded successfully")
-            },
-            error: function(){
-              console.log("Something went wrong")
-            }
-          })
+      //Post the form data to the endpoint, note the need to set the content type header
+      $.ajax({
+        url: CNM, 
+        data: submitData,
+        cache: false,
+        enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data){
+          window.alert("Media has been uploaded successfully")
+        },
+        error: function(){
+          console.log("Something went wrong")
+        }
+      })    
     }
     else if(fileExtension != fileType)
     {
@@ -643,14 +652,14 @@ function upHeaderText()
     { element: $("#pageTitle"), text: $("#pageTitle").text() },
     { element: $("#homeIndex"), text: $("#homeIndex").text() },
     { element: $("#logoutButton"), text: $("#logoutButton").text() },
-    { element: $("#usernameDisplay"), text: $("#usernameDisplay").text() }
+    { element: $("#usernameDisplay"), text: $("#usernameDisplay").text() },
+    { element: $("#qaLink"), text: $("#qaLink").text() }
   ];
 
   elementsToTranslate.forEach(function(item) 
   {
     translateText(item.text, selectedLanguage, function(translatedText) 
     {
-      console.log("Translated text: " + translatedText);
       item.element.text(translatedText);
     });
   });
@@ -673,7 +682,6 @@ function upContainerText()
   {
     translateText(item.text, selectedLanguage, function(translatedText) 
     {
-      console.log("Translated text: " + translatedText);
       item.element.text(translatedText);
     });
   });
@@ -692,7 +700,6 @@ function upIndexText()
   {
     translateText(item.text, selectedLanguage, function(translatedText) 
     {
-      console.log("Translated text: " + translatedText);
       item.element.text(translatedText);
     });
   });
@@ -715,7 +722,6 @@ function upRegisterText()
   {
     translateText(item.text, selectedLanguage, function(translatedText) 
     {
-      console.log("Translated text: " + translatedText);
       item.element.text(translatedText);
     });
   });
@@ -734,7 +740,24 @@ function upLoginText()
   {
     translateText(item.text, selectedLanguage, function(translatedText) 
     {
-      console.log("Translated text: " + translatedText);
+      item.element.text(translatedText);
+    });
+  });
+}
+
+function upQAText()
+{
+  const elementsToTranslate = [
+    { element: $("#questionTitle"), text: $("#questionTitle").text() },
+    { element: $("#clearQuestion"), text: $("#clearQuestion").text() },
+    { element: $("#submitQuestion"), text: $("#submitQuestion").text() },
+    { element: $("#answerArea"), text: $("#answerArea").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item)
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
       item.element.text(translatedText);
     });
   });
@@ -757,4 +780,42 @@ function loadLanguage()
   upIndexText();
   upLoginText();
   upRegisterText();
+  upQAText();
+}
+
+function questionAnswers(text)
+{
+  let predictionUrl = "https://qa-b00785636-cw.cognitiveservices.azure.com/language/:query-knowledgebases?projectName=MediaTracker&api-version=2021-10-01&deploymentName=production";
+  let subscriptionKey = "09cb58702815463ca72048b121594b74";
+
+  let queryText = `${text}`;
+
+  $.ajax({
+    url: predictionUrl,
+    type: "POST",
+    headers: {
+      "Ocp-Apim-Subscription-Key": subscriptionKey,
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify({
+      question: queryText
+    }),
+    success: function (response) {
+      let answer = response.answers[0].answer;
+      $('#answerArea').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
+
+      setTimeout(function() {
+        $('#answerArea').html(`<p>Answer: ${answer}</p>`);
+      }, 1000); 
+    },
+    error: function (error) {
+      console.error(error);
+    }
+  });
+}
+
+function clearQuestionForm()
+{
+  $('#questionBox').val("");
+  $('#answerArea').html(``);
 }
