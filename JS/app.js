@@ -15,7 +15,6 @@ let loggedInUserID;
 let loggedInUsername;
 let selectedLanguage = $("#languageBox").val();
 
-// Handlers for button clicks
 $(document).ready(function() {
 
   selectedLanguage = localStorage.getItem('selectedLanguage');
@@ -42,26 +41,20 @@ $(document).ready(function() {
     saveLoggedOutData();
   })
   
-  // Guest button
   $("#guestButton").click(function(){
     saveGuestData()
   })
 
-  // Register button on register from
   $("#submitRegister").click(function(event){
     event.preventDefault();
-    // Submit registration
     submitRegistration();
   })
 
-  // Login button on login form
   $("#submitLogin").click(function(event){
       event.preventDefault();
-      // Submit login
       submitLogin();
   })
 
-  // Submit button on question form
   $("#submitQuestion").click(function(event)
   {
     event.preventDefault();
@@ -84,13 +77,34 @@ $(document).ready(function() {
     clearQuestionForm();
   })
 
-  // New container
+  $("#submitModeration").click(function(event)
+  {
+    event.preventDefault();
+
+    let moderationLink = $("#moderationBox").val();
+
+    if(moderationLink !== "")
+    {
+      contentMod(moderationLink);
+    }
+    else
+    {
+      window.alert("Please enter a valid image link!")
+    }
+  })
+
+  $("#clearModeration").click(function(event)
+  {
+    event.preventDefault();
+    clearModerationForm();
+  })
+
+
   $('#indexContainer').on('click', '#submitNewMedia', function(event){
     event.preventDefault();
     submitNewMedia();
   });
 
-  // Clear submit new media form
   $('#indexContainer').on('click', '#clearNewMediaForm', function(event){
     event.preventDefault();
     clearSubmitNewMedia();
@@ -108,6 +122,11 @@ $(document).ready(function() {
 
     loadLanguage();
   })
+
+  $('#indexContainer').on('click', '#moderateFile', function(event){
+    event.preventDefault();
+    contentMod();
+  });
 
 });
 
@@ -148,9 +167,7 @@ function editMedia(data) {
 
 }
 
-// create a new logic app for when 
 function deleteMedia(mediaID) {
-  // Log a message to the console
   console.log("Edit button clicked for mediaID: " + mediaID);
   let confirmDelete = window.confirm("Are you sure you want to delete this media item?");
 
@@ -162,7 +179,6 @@ function deleteMedia(mediaID) {
       type: "DELETE",
       url: DIM,
     }).done(function(msg){
-      // On success, update the asset list
       getMedia();
       console.log("deleted media")
     });
@@ -171,15 +187,12 @@ function deleteMedia(mediaID) {
 
 function validateRegistration(password)
 {
-   // Password validation
-   // Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit
    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
    const isPasswordValid = passwordRegex.test(password);
 
    return (isPasswordValid)
 }
 
-// Login TO-DO API to post data
 function submitLogin()
 {
   let loginEmail = $('#loginEmail').val().trim();
@@ -192,7 +205,6 @@ function submitLogin()
       Password: loginPassword
     };
   
-    //Post the data to the endpoint
     $.ajax({
       url: GUI, 
       data: JSON.stringify(requestData),
@@ -235,7 +247,6 @@ function passwordMatch()
   return (password === confirmPassword);
 }
 
-// Register TO-DO API to post data
 function submitRegistration()
 {
   let firstName = $('#registerFirstname').val().trim();
@@ -252,7 +263,6 @@ function submitRegistration()
     Password: password
   };
 
-  // Handle registration
   if(validateRegistration(password) && passwordMatch())
   {
     $.ajax({
@@ -264,7 +274,6 @@ function submitRegistration()
         handleRegistration();  
       },
       error: function(error) {
-        // Handle login error
         window.alert("Looks like your username or email has already been taken!")
         console.error('Login failed:', error);
     }
@@ -289,18 +298,14 @@ function handleLoggedInUsers() {
 
   if (loggedIn) 
   {
-    // Show the spinning animation
     $('#registerFormDiv').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
 
-    // Add a delay to animation
     setTimeout(function() {
       $('#registerFormDiv').html('<a href="index.html" class="btn btn-secondary">Go to Media Share</a>');
     }, 1000); 
 
-    // Show the spinning animation
     $('#loginFormDiv').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
 
-    // Add a delay to animation
     setTimeout(function() {
       $('#loginFormDiv').html('<a href="index.html" class="btn btn-secondary">Go to Media Share</a>');
     }, 1000); 
@@ -314,14 +319,10 @@ function handleLoggedInUsers() {
     </li>
     </ul>`;
     
-    // Spinning animation for loading
     $('#indexContainer').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
 
-    // Simulate an asynchronous operation with a setTimeout
-    setTimeout(function() {
-      // Your code to be executed after 5 seconds (or any other duration)
-      // Replace the following lines with your actual code
-
+    setTimeout(function() 
+    {
       let items = [];
 
       items.push(`
@@ -385,7 +386,6 @@ function handleLoggedInUsers() {
   }
 }
 
-// add index login and register pages
 function handleLoggedOutUsers()
 {
   $('#logoutButton').empty();
@@ -393,10 +393,8 @@ function handleLoggedOutUsers()
 
 function handleRegistration()
 {
-  // Show the spinning animation
   $('#registerFormDiv').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
 
-  // Add a delay to animation
   setTimeout(function() {
     $('#registerFormDiv').html('<a href="login.html" class="btn btn-secondary">Go to Login Page</a>');
   }, 1000); 
@@ -442,20 +440,18 @@ function submitNewMedia()
   {
     let uploadFileName = uploadFile.name;
 
-    // Extract file extension
     let fileExtension = uploadFileName.split('.').pop().toLowerCase();
     
-    // Check if the file extension matches the selected media type
     if (fileExtension === fileType && fileName != "") 
     {
-      //Get form variables and append them to the form data object
+      submitData = new FormData();
+
       submitData.append('fileName', fileName)
       submitData.append('fileType', fileType)
       submitData.append('userID', loggedInUserID)
       submitData.append('userName', loggedInUsername)
       submitData.append('uploadFile', uploadFile)  
 
-      //Post the form data to the endpoint, note the need to set the content type header
       $.ajax({
         url: CNM, 
         data: submitData,
@@ -504,7 +500,6 @@ function clearSubmitNewMedia()
 
 function getMedia() {
 
-  //Replace current HTML in that div with a loading message
   $('#MediaList').html('<div class="spinner-border" role="status"><span class="sr-only">&nbsp;</span>');
 
   GUM = GUM.replace('{id}', loggedInUserID);
@@ -536,10 +531,8 @@ function getMedia() {
           items.push('<button type="button" class="btn btn-danger mt-3" onclick="deleteMedia(\'' + val["id"] + '\')">Delete</button>');
       });
 
-      // Clear the MediaList div
       $('#MediaList').empty();
 
-      // Append the contents of the items array to the MediaList Div
       $("<ul/>", {
           "class": "my-new-list",
           html: items.join("")
@@ -608,7 +601,6 @@ function translateText(text, language, callback)
     }
   ];
 
-  // Make the API request
   $.ajax({
     url: constructedUrl + '?' + $.param(params),
     type: 'POST',
@@ -617,7 +609,6 @@ function translateText(text, language, callback)
     headers: headers,
     success: function(response) {
       let translatedText = response[0].translations[0].text;
-      // sends translatedText data over to the other function to use
       callback(translatedText); 
     },
     error: function(error) {
@@ -763,6 +754,25 @@ function upQAText()
   });
 }
 
+function upModerationText()
+{
+  const elementsToTranslate = [
+    { element: $("#modLink"), text: $("#modLink").text() },
+    { element: $("#submitModeration"), text: $("#submitModeration").text() },
+    { element: $("#clearModeration"), text: $("#clearModeration").text() },
+    { element: $("#moderationTitle"), text: $("#moderationTitle").text() },
+    { element: $("#moderationP"), text: $("#moderationP").text() }
+  ];
+
+  elementsToTranslate.forEach(function(item)
+  {
+    translateText(item.text, selectedLanguage, function(translatedText) 
+    {
+      item.element.text(translatedText);
+    });
+  });
+}
+
 function setLanguage(selectedLanguage)
 {
   localStorage.setItem('selectedLanguage', selectedLanguage);
@@ -781,6 +791,7 @@ function loadLanguage()
   upLoginText();
   upRegisterText();
   upQAText();
+  upModerationText();
 }
 
 function questionAnswers(text)
@@ -818,4 +829,67 @@ function clearQuestionForm()
 {
   $('#questionBox').val("");
   $('#answerArea').html(``);
+}
+
+function clearModerationForm()
+{
+  $('#moderationBox').val("");
+  $('#moderationArea').html(``);
+}
+
+function contentMod(imageUrl) 
+{
+  const endpoint = "https://content-mod-b00785636-cw.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate";
+  const apiKey = "d895c55022e7446b86af07b6af6765e1";
+
+  if (imageUrl && isValidImageUrl(imageUrl)) {
+    $.ajax({
+      url: endpoint,
+      type: "POST",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
+      },
+      data: JSON.stringify({ DataRepresentation: "URL", Value: imageUrl }),
+      contentType: "application/json",
+      success: function (result) {
+        console.log(JSON.stringify(result, null, 2));
+        response = JSON.stringify(result, null, 2);
+        data = JSON.parse(response); 
+
+        let adultClassificationScore = data.AdultClassificationScore;
+        let isImageAdultClassified = data.IsImageAdultClassified;
+        let racyClassificationScore = data.RacyClassificationScore;
+        let isImageRacyClassified = data.IsImageRacyClassified;
+        let answer;
+
+        if (isImageAdultClassified && adultClassificationScore > 0.5) 
+        {
+          anwser = "This image is classified as adult content.";
+        } 
+        else if (isImageRacyClassified && racyClassificationScore > 0.5) 
+        {
+          answer = "This image is classified as racy.";
+        } 
+        else 
+        {
+          answer = "This image is not classified as adult or racy.";
+        }
+
+        $('#moderationArea').html('<div class="spinner-border" role="status"><span class="sr-only"></span></div>');
+
+        setTimeout(function() {
+          $('#moderationArea').html(`<p>Answer: ${answer}</p>`);
+        }, 1000); 
+      },
+      error: function (error) {
+        console.error("Error moderating media file:", error.responseText);
+      }
+    });
+  } else {
+    window.alert("Please select a valid media file.");
+  }
+}
+
+function isValidImageUrl(imageUrl) {
+  return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
 }

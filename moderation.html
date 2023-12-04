@@ -61,49 +61,39 @@
                 <a class="nav-link" id="modLink" href="moderation.html">Moderation</a>
               </li>
             </ul>
-
+            
           </div>
         </div>
         </nav>
       </div>
 
-    <!-- Content -->
-    <div class="container mb-3">
-      <div class="row justify-content-center align-items-center pt-5" id="registerFormDiv">
+    <!-- Content --> 
+    <div class="container">
+      <div class="row justify-content-center align-items-center pt-2">
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h2 id="loginHeader" class="card-title text-center">Registration</h2>
 
-              <form id="registerForm">
-                <div class="mb-3">
-                  <label for="firstname" id="rFirstName" class="form-label">Firstname</label>
-                  <input type="text" class="form-control" id="registerFirstname" required>
+            <div class="container row justify-content-center align-items-center pt-5">
+
+                <h3 id="moderationTitle">Moderate An Image File</h3>
+                <p id="moderationP">Please enter an image link that uses HTTP / HTTPS</p>
+                <!-- Text area for entering a question -->
+                <div class="form-group">
+                    <textarea class="form-control" id="moderationBox" rows="5"></textarea>
                 </div>
-              <div class="mb-3">
-                <label for="lastname" id="rLastName" class="form-label">Lastname</label>
-                <input type="text" class="form-control" id="registerLastname" required>
+                
+                <!-- Button to submit the question -->
+                <div class="mb-3 d-flex justify-content-between">
+                    <button type="button" id="submitModeration" class="btn btn-primary mt-2">Submit</button>
+                    <button type="button" id="clearModeration" class="btn btn-primary mt-2">Clear</button>
+                </div>
+                
+                <!-- Area for displaying responses -->
+                <div id="moderationArea" class="row justify-content-center align-items-center p-1">
+                    
+                </div>
+
             </div>
-                <div class="mb-3">
-                    <label for="username" id="rUserName" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="registerUsername" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" id="rEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="registerEmail" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" id="rPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="registerPassword" required>
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" id="rConfirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="registerConfirmPassword" required>
-                </div>
-                <button id="submitRegister" type="submit" class="btn btn-primary btn-block">Register</button>
-              </form class="m-5">   
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

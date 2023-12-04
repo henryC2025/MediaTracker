@@ -36,6 +36,13 @@ h1
     text-transform: uppercase;
 }
 
+#modLink
+{
+    font-weight: 1000;
+    font-size: xx-large;
+    text-transform: uppercase;
+}
+
 #logoutButton
 {
     font-weight: 1000;
